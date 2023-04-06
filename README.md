@@ -1,2 +1,3 @@
-# Undergraduate_Projects
-Repository containing projects of my undergrad.
+# Undergraduate-Projects
++ Repository of projects and their reports performed during my BS. Reach out to me if you have any questions.
++ The projects extensively involve 3D and Simulation softwares - Solidworks, ANSYS and MATLAB.
