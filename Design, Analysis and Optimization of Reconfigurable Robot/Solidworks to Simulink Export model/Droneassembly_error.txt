@@ -1,0 +1,12 @@
+Constrained Instances: 'Bottom Plate-2', 'Bottom Plate-2', 'Quad design-1', 'Quad design-1'
+Constraint Name: Width1
+Error Details: Constraint is not supported. The constraint has been ignored.
+---------------------------------------------------------------------------------
+Constrained Instances: 'Bottom Plate-2', 'Bottom Plate-2', 'Quad design-1', 'Quad design-1'
+Constraint Name: Width2
+Error Details: Constraint is not supported. The constraint has been ignored.
+---------------------------------------------------------------------------------
+Constrained Instances: 'PTibiaSidePlate-1', 'PTibiaSidePlate-2', 'PStandoff-1', 'PStandoff-1'
+Constraint Name: Width2
+Error Details: Constraint is not supported. The constraint has been ignored.
+---------------------------------------------------------------------------------
