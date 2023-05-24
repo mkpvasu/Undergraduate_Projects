@@ -1,0 +1,1924 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openIges('G:/Intern Works/Sai/L_Shape.IGS', msbo=False, scaleFromFile=OFF, 
+    trimCurve=DEFAULT)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, convertToAnalytical=1
+    , dimensionality=THREE_D, geometryFile=mdb.acis, name='L_Shape', 
+    stitchEdges=1, stitchTolerance=1.0, type=DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='steel')
+mdb.models['Model-1'].materials['steel'].Elastic(table=((200000000000.0, 0.28), 
+    ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='steel', name=
+    'Section-1', thickness=None)
+mdb.models['Model-1'].parts['L_Shape'].Set(cells=
+    mdb.models['Model-1'].parts['L_Shape'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), name='lshapeset1')
+mdb.models['Model-1'].parts['L_Shape'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['L_Shape'].sets['lshapeset1'], sectionName=
+    'Section-1', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='L_Shape-1', 
+    part=mdb.models['Model-1'].parts['L_Shape'])
+mdb.models['Model-1'].StaticStep(name='Step-1', previous='Initial')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['L_Shape-1'].faces.getSequenceFromMask(
+    ('[#40 ]', ), ), name='Set-1')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, name=
+    'BC-1', region=mdb.models['Model-1'].rootAssembly.sets['Set-1'], u1=0.0, 
+    u2=0.0, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].TabularAmplitude(data=((0.0, 0.0), (1.0, 1.0)), name=
+    'Amp-1', smooth=SOLVER_DEFAULT, timeSpan=STEP)
+mdb.models['Model-1'].rootAssembly.Surface(name='Surf-1', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['L_Shape-1'].faces.getSequenceFromMask(
+    ('[#20 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude='Amp-1', createStepName='Step-1', 
+    distributionType=UNIFORM, field='', magnitude=1000.0, name='Load-1', 
+    region=mdb.models['Model-1'].rootAssembly.surfaces['Surf-1'])
+mdb.models['Model-1'].parts['L_Shape'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=10.0)
+mdb.models['Model-1'].parts['L_Shape'].generateMesh()
+mdb.models['Model-1'].parts['L_Shape'].deleteMesh()
+mdb.models['Model-1'].parts['L_Shape'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1'].parts['L_Shape'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.Set(cells=
+    mdb.models['Model-1'].rootAssembly.instances['L_Shape-1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='lshape1')
+mdb.models['Model-1'].TopologyTask(name='lsahpetopo', region=
+    mdb.models['Model-1'].rootAssembly.sets['lshape1'])
+mdb.models['Model-1'].optimizationTasks['lsahpetopo'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='VOLUME', name='volume', operation=SUM, 
+    region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['lsahpetopo'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='STRAIN_ENERGY', name='strainenergy', 
+    operation=SUM, region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['lsahpetopo'].ObjectiveFunction(name=
+    'straine', objectives=((OFF, 'strainenergy', 1.0, 0.0, ''), ))
+mdb.models['Model-1'].optimizationTasks['lsahpetopo'].OptimizationConstraint(
+    designResponse='volume', name='volconst', restrictionMethod=
+    RELATIVE_LESS_THAN_EQUAL, restrictionValue=0.25)
+mdb.OptimizationProcess(dataSaveFrequency=OPT_DATASAVE_SPECIFY_CYCLE, 
+    description='', maxDesignCycle=30, model='Model-1', name='lshapeopt', 
+    odbMergeFrequency=2, prototypeJob='lshapeopt-Job', task='lsahpetopo')
+mdb.optimizationProcesses['lshapeopt'].Job(atTime=None, getMemoryFromAnalysis=
+    True, memory=90, memoryUnits=PERCENTAGE, model='Model-1', 
+    multiprocessingMode=DEFAULT, name='lshapeopt-Job', numCpus=1, numGPUs=0, 
+    queue=None, waitHours=0, waitMinutes=0)
+mdb.optimizationProcesses['lshapeopt'].submit()
+mdb.optimizationProcesses['lshapeopt']._Message(STARTED, {
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                ___ ___ __  __ _   _ _    ___   _                         |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |               / __|_ _|  \\/  | | | | |  |_ _| /_\\                        |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |               \\__ \\| || |\\/| | |_| | |__ | | / _ \\                       |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |               |___/___|_|  |_|\\___/|____|___/_/ \\_\\                      |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                     _______                                              |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                    |__   __|                                             |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                       | | ___  ___  ___ __ _                             |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                       | |/ _ \\/ __|/ __/ _` |                            |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                       | | (_) \\__ \\ (_| (_| |                            |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                       |_|\\___/|___/\\___\\__,_|                            |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |            _____ _                   _                                   |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |           / ____| |                 | |                                  |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |          | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ ___                  |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |           \\___ \\| __| "__| | | |/ __| __| | | | "__/ _ \\                 |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |           ____) | |_| |  | |_| | (__| |_| |_| | | |  __/                 |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |          |_____/ \\__|_|   \\__,_|\\___|\\__|\\__,_|_|  \\___|                 |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |    PERL execution control                                                |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |    Version 3DEXPERIENCE R2017x                                           |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' |    Copyright (c) 2016 Dassault Systemes Simulia Corp.                    |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Logfile: lshapeopt\\TOSCA.OUT', 'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' | Starting jobname: "lshapeopt"                                            |', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure pre-processor', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 0', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32500, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:11:07 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 0', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 1', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 26796, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:11:27 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 1', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 2', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27892, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:11:47 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 2', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 3', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 592, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:12:08 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 3', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 4', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32600, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:12:28 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 4', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 5', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 28896, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:12:48 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 5', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 6', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 19004, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:13:08 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 6', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 7', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 23016, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:13:28 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 7', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 8', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 24912, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:13:48 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 8', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 9', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32248, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:14:08 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 9', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 10', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 21588, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:14:28 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 10', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 11', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 26732, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:14:48 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 11', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 12', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 21160, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:15:09 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 12', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 13', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 29984, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:15:29 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 13', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 14', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 17572, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:15:49 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 14', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 15', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 31376, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:16:10 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 15', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 16', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 7588, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:16:30 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 16', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 17', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 22564, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:16:50 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 17', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 18', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32940, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:17:11 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 18', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 19', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33276, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:17:31 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 19', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 20', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33644, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:17:51 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 20', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 21', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32936, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:18:12 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 21', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 22', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33148, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:18:31 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 22', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 23', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 30228, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:18:51 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 23', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 24', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33388, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:19:11 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 24', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 25', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32884, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:19:32 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 25', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 26', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32288, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:19:52 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 26', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 27', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33428, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:20:12 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 27', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 28', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33612, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:20:32 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 28', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 29', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 28620, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:20:50 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 29', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 30', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FILE, 
+    {'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\lshapeopt\\lshapeopt-Job.odb', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(WARNING, 
+    {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STARTED, 
+    {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27744, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'lshapeopt-Job', 
+    'memory': 32.0})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 18.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(ODB_FRAME
+    , {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'lshapeopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(END_STEP, 
+    {'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(COMPLETED
+    , {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt'].jobs['lshapeopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:21:10 2018', 
+    'jobName': 'lshapeopt-Job'})
+mdb.optimizationProcesses['lshapeopt']._archiveJob(jobName='lshapeopt-Job')
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 30', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Generating REPORT input file: lshapeopt\\lshapeopt_post.par', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure.report module', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(STATUS, {
+    'message': ' SIMULIA Tosca Structure ended successfully', 
+    'jobName': 'lshapeopt'})
+mdb.optimizationProcesses['lshapeopt']._Message(COMPLETED, {
+    'time': 'Mon Jun 25 15:21:16 2018', 'jobName': 'lshapeopt'})
+# Save by Muni Kumar lamborg on 2018_06_25-15.22.11; build 2017 2016_09_28-03.24.59 126836

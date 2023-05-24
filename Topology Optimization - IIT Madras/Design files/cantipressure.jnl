@@ -1,0 +1,1916 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openIges('G:/Intern Works/Sai/CANTILEVER.IGS', msbo=False, scaleFromFile=
+    OFF, trimCurve=DEFAULT)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, convertToAnalytical=1
+    , dimensionality=THREE_D, geometryFile=mdb.acis, name='CANTILEVER', 
+    stitchEdges=1, stitchTolerance=1.0, type=DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='steel')
+mdb.models['Model-1'].materials['steel'].Elastic(table=((200000000000.0, 0.28), 
+    ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='steel', name=
+    'Section-1', thickness=None)
+mdb.models['Model-1'].parts['CANTILEVER'].Set(cells=
+    mdb.models['Model-1'].parts['CANTILEVER'].cells.getSequenceFromMask((
+    '[#1 ]', ), ), name='cantiset')
+mdb.models['Model-1'].parts['CANTILEVER'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['CANTILEVER'].sets['cantiset'], sectionName=
+    'Section-1', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='CANTILEVER-1', 
+    part=mdb.models['Model-1'].parts['CANTILEVER'])
+mdb.models['Model-1'].StaticStep(name='Step-1', previous='Initial')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['CANTILEVER-1'].faces.getSequenceFromMask(
+    ('[#20 ]', ), ), name='fixedbc')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, name=
+    'fixedload', region=mdb.models['Model-1'].rootAssembly.sets['fixedbc'], u1=
+    0.0, u2=0.0, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].TabularAmplitude(data=((0.0, 0.0), (1.0, 1.0)), name=
+    'Amp-1', smooth=SOLVER_DEFAULT, timeSpan=STEP)
+mdb.models['Model-1'].rootAssembly.Surface(name='loadsur', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['CANTILEVER-1'].faces.getSequenceFromMask(
+    ('[#8 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude='Amp-1', createStepName='Step-1', 
+    distributionType=UNIFORM, field='', magnitude=1000.0, name='load', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['loadsur'])
+mdb.models['Model-1'].parts['CANTILEVER'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1'].parts['CANTILEVER'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].TopologyTask(name='cantitopo', region=MODEL)
+mdb.models['Model-1'].optimizationTasks['cantitopo'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='STRAIN_ENERGY', name='strainenergy', 
+    operation=SUM, region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['cantitopo'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='VOLUME', name='volume', operation=SUM, 
+    region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['cantitopo'].ObjectiveFunction(name=
+    'straine', objectives=((OFF, 'strainenergy', 1.0, 0.0, ''), ))
+mdb.models['Model-1'].optimizationTasks['cantitopo'].OptimizationConstraint(
+    designResponse='volume', name='volconst', restrictionMethod=
+    RELATIVE_LESS_THAN_EQUAL, restrictionValue=0.25)
+mdb.OptimizationProcess(dataSaveFrequency=OPT_DATASAVE_SPECIFY_CYCLE, 
+    description='', maxDesignCycle=30, model='Model-1', name='cantiopt', 
+    odbMergeFrequency=2, prototypeJob='cantiopt-Job', task='cantitopo')
+mdb.optimizationProcesses['cantiopt'].Job(atTime=None, getMemoryFromAnalysis=
+    True, memory=90, memoryUnits=PERCENTAGE, model='Model-1', 
+    multiprocessingMode=DEFAULT, name='cantiopt-Job', numCpus=1, numGPUs=0, 
+    queue=None, waitHours=0, waitMinutes=0)
+mdb.optimizationProcesses['cantiopt'].submit()
+mdb.optimizationProcesses['cantiopt']._Message(STARTED, {
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                ___ ___ __  __ _   _ _    ___   _                         |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |               / __|_ _|  \\/  | | | | |  |_ _| /_\\                        |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |               \\__ \\| || |\\/| | |_| | |__ | | / _ \\                       |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |               |___/___|_|  |_|\\___/|____|___/_/ \\_\\                      |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                     _______                                              |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                    |__   __|                                             |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                       | | ___  ___  ___ __ _                             |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                       | |/ _ \\/ __|/ __/ _` |                            |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                       | | (_) \\__ \\ (_| (_| |                            |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                       |_|\\___/|___/\\___\\__,_|                            |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |            _____ _                   _                                   |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |           / ____| |                 | |                                  |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |          | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ ___                  |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |           \\___ \\| __| "__| | | |/ __| __| | | | "__/ _ \\                 |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |           ____) | |_| |  | |_| | (__| |_| |_| | | |  __/                 |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |          |_____/ \\__|_|   \\__,_|\\___|\\__|\\__,_|_|  \\___|                 |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |    PERL execution control                                                |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |    Version 3DEXPERIENCE R2017x                                           |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' |    Copyright (c) 2016 Dassault Systemes Simulia Corp.                    |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Logfile: cantiopt\\TOSCA.OUT', 'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' | Starting jobname: "cantiopt"                                             |', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure pre-processor', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 0', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33756, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:43:39 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 0', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 1', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 28920, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:43:55 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 1', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 2', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 31004, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:44:11 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 2', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 3', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 30232, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:44:26 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 3', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 4', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 31864, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:44:42 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 4', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 5', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 30992, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:44:58 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 5', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 6', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27044, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:45:13 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 6', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 7', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33732, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:45:29 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 7', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 8', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 18628, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:45:45 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 8', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 9', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 20968, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:46:00 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 9', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 10', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 33084, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:46:16 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 10', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 11', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27044, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:46:32 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 11', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 12', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 21552, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:46:48 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 12', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 13', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 30140, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:47:03 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 13', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 14', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 30768, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:47:19 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 14', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 15', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27792, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:47:35 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 15', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 16', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 10548, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:47:50 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 16', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 17', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 20172, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:48:06 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 17', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 18', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 19056, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:48:22 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 18', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 19', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 3324, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:48:38 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 19', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 20', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 31264, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:48:53 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 20', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 21', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 19436, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:49:09 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 21', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 22', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 20324, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:49:23 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 22', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 23', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32608, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:49:39 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 23', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 24', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 13620, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:49:54 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 24', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 25', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 22788, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:50:10 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 25', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 26', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 24588, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:50:25 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 26', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 27', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 19016, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:50:41 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 27', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 28', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 27044, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:50:57 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 28', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 29', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 32320, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:51:10 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 29', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 30', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\cantiopt\\cantiopt-Job.odb', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 'handle': 13620, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 'jobName': 'cantiopt-Job', 
+    'memory': 27.0})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 17.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(ODB_FRAME, 
+    {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(STATUS, {
+    'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 'increment': 1, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'cantiopt-Job', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(COMPLETED, 
+    {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt'].jobs['cantiopt-Job']._Message(
+    JOB_COMPLETED, {'time': 'Mon Jun 25 15:51:26 2018', 
+    'jobName': 'cantiopt-Job'})
+mdb.optimizationProcesses['cantiopt']._archiveJob(jobName='cantiopt-Job')
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 30', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Generating REPORT input file: cantiopt\\cantiopt_post.par', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure.report module', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(STATUS, {
+    'message': ' SIMULIA Tosca Structure ended successfully', 
+    'jobName': 'cantiopt'})
+mdb.optimizationProcesses['cantiopt']._Message(COMPLETED, {
+    'time': 'Mon Jun 25 15:51:34 2018', 'jobName': 'cantiopt'})
+# Save by Muni Kumar lamborg on 2018_06_25-15.52.59; build 2017 2016_09_28-03.24.59 126836

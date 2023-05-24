@@ -1,0 +1,2598 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openIges('G:/Bio Mechanics/cRaNIoFacIaL RecOnsTRuCtiOn 2.IGS', msbo=False, 
+    scaleFromFile=OFF, trimCurve=DEFAULT)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, convertToAnalytical=1
+    , dimensionality=THREE_D, geometryFile=mdb.acis, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn 2', stitchEdges=1, stitchTolerance=1.0, type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='Steel')
+mdb.models['Model-1'].materials['Steel'].Elastic(table=((29000000.0, 2.7), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionCellByPlanePointNormal(
+    cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), normal=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13], 
+    point=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].vertices[10])
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].features['Partition cell-1']
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionCellByPlanePointNormal(
+    cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), normal=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[12], 
+    point=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].vertices[10])
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].features['Partition cell-1']
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionCellByPlanePointNormal(
+    cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), normal=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[17], 
+    point=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].InterestingPoint(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[16], 
+    MIDDLE))
+#* Feature creation failed.
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=0.02, name='__profile__', 
+    sheetSize=1.01, transform=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces[4], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13], 
+    sketchOrientation=RIGHT, origin=(3.58, 1.5, 1.05)))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].projectReferencesOntoSketch(
+    filter=COPLANAR_EDGES, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(-0.05, 0.25), 
+    point2=(-0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].ParallelConstraint(addUndoState=
+    False, entity1=mdb.models['Model-1'].sketches['__profile__'].geometry[2], 
+    entity2=mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(-0.05, -0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[6], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.05, -0.25), 
+    point2=(0.05, 0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[8])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[8])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.05, 0.25), point2=
+    (-0.05, 0.25))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[9])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[8], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[9])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, 0.0), point2=(
+    1.0, 1.0))
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(1.0, 1.0), point2=(
+    0.0, 1.0))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[11])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=0.02, name='__profile__', 
+    sheetSize=1.01, transform=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces[4], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13], 
+    sketchOrientation=RIGHT, origin=(3.58, 1.5, 1.05)))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].projectReferencesOntoSketch(
+    filter=COPLANAR_EDGES, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-0.05, 0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-0.05, 0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-0.05, 0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionFaceBySketch(
+    faces=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces.getSequenceFromMask(
+    ('[#10 ]', ), ), sketch=mdb.models['Model-1'].sketches['__profile__'], 
+    sketchUpEdge=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13])
+#* Feature creation failed.
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-0.05, 0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-0.05, 0.25), 
+    point2=(0.05, -0.25))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionFaceBySketch(
+    faces=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces.getSequenceFromMask(
+    ('[#10 ]', ), ), sketch=mdb.models['Model-1'].sketches['__profile__'], 
+    sketchUpEdge=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13])
+#* Feature creation failed.
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn 2-1', part=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'])
+mdb.models['Model-1'].StaticStep(name='design', previous='Initial')
+mdb.models['Model-1'].StaticStep(name='support', previous='design')
+mdb.models['Model-1'].HomogeneousSolidSection(material='Steel', name='design', 
+    thickness=None)
+mdb.models['Model-1'].HomogeneousSolidSection(material='Steel', name='support', 
+    thickness=None)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].Set(cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='designset')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].SectionAssignment(
+    offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].sets['designset']
+    , sectionName='design', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.regenerate()
+del mdb.models['Model-1'].steps['support']
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].faces.getSequenceFromMask(
+    ('[#10 ]', ), ), name='fixedoneset')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='fixedone', 
+    region=mdb.models['Model-1'].rootAssembly.sets['fixedoneset'], u1=SET, u2=
+    SET, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ), name='fixedbcsettwo')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='fixedbctwo', 
+    region=mdb.models['Model-1'].rootAssembly.sets['fixedbcsettwo'], u1=SET, 
+    u2=SET, u3=SET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].TabularAmplitude(data=((0.0, 0.0), (1.0, 1.0)), name=
+    'Amp-1', smooth=SOLVER_DEFAULT, timeSpan=STEP)
+mdb.models['Model-1'].rootAssembly.Surface(name='load1surf', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].faces.getSequenceFromMask(
+    ('[#10000 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude='Amp-1', createStepName='design', 
+    distributionType=UNIFORM, field='', magnitude=100.0, name='load1', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['load1surf'])
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].seedPart(
+    deviationFactor=0.1, minSizeFactor=0.1, size=0.2)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].setMeshControls(
+    elemShape=TET, regions=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), technique=FREE)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].setElementType(
+    elemTypes=(ElemType(elemCode=C3D20R, elemLibrary=STANDARD), ElemType(
+    elemCode=C3D15, elemLibrary=STANDARD), ElemType(elemCode=C3D10, 
+    elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-1', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, queue=None, resultsFormat=ODB, scratch='', type=
+    ANALYSIS, userSubroutine='', waitHours=0, waitMinutes=0)
+mdb.jobs['Job-1'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN INVALID POISSONS RATIO VALUE HAS BEEN SPECIFIED. THE POISSONS RATIO MUST BE LESS THAN THE VALUE OF .5', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '5 WARNINGS HAVE BEEN ISSUED REGARDING THE POISSON RATIO FOR THE ELASTIC MATERIAL NAMED STEEL. NO MORE WARNING MESSAGES WILL BE PRINTED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN INVALID POISSONS RATIO VALUE OF 2.7000 HAS BEEN SPECIFIED. THE POISSONS RATIO MUST BE LESS THAN THE VALUE OF .5', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job-1.odb', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ABORTED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {
+    'message': 'Analysis Input File Processor exited with an error.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(JOB_ABORTED, {
+    'message': 'Analysis Input File Processor exited with an error.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN INVALID POISSONS RATIO VALUE HAS BEEN SPECIFIED. THE POISSONS RATIO MUST BE LESS THAN THE VALUE OF .5', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE POISSON RATIO OF 2.7000 EXCEEDS 0.495 (THE BULK MODULUS OF -2.19697E+06 EXCEEDS 100 TIMES THE SHEAR MODULUS OF 3.91892E+06) FOR THE ELASTIC MATERIAL NAMED STEEL. HOWEVER, A HYBRID TYPE ELEMENT IS NOT USED. THIS MAY CAUSE CONVERGENCE PROBLEMS. IT IS RECOMMENDED THAT YOU CHANGE THE ELEMENT TYPE TO A HYBRID ELEMENT; HOWEVER, YOU CAN ALSO CONVERTTHIS ERROR MESSAGE TO A WARNING MESSAGEBY SETTING THE ENVIRONMENT VARIABLE NONHYBRID_INCOMPRESS TO WARNING OR BY ADDING *DIAGNOSTICS, NONHYBRID=WARNING TO THE INPUT FILE (NOT RECOMMENDED).', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '5 WARNINGS HAVE BEEN ISSUED REGARDING THE POISSON RATIO FOR THE ELASTIC MATERIAL NAMED STEEL. NO MORE WARNING MESSAGES WILL BE PRINTED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN INVALID POISSONS RATIO VALUE OF 2.7000 HAS BEEN SPECIFIED. THE POISSONS RATIO MUST BE LESS THAN THE VALUE OF .5', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job-1.odb', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ABORTED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {
+    'message': 'Analysis Input File Processor exited with an error.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(JOB_ABORTED, {
+    'message': 'Analysis Input File Processor exited with an error.', 
+    'jobName': 'Job-1'})
+mdb.models['Model-1'].materials['Steel'].elastic.setValues(table=((29000000.0, 
+    0.27), ))
+mdb.jobs['Job-1'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job-1.odb', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 11108, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-1', 'memory': 597.0})
+mdb.jobs['Job-1']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 8074.0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MINIMUM_MEMORY, {'minimum_memory': 100.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 1.0, 'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(JOB_COMPLETED, {'time': 'Wed May 30 20:12:08 2018', 
+    'jobName': 'Job-1'})
+mdb.models['Model-1'].TopologyTask(name='topoopt2', region=MODEL)
+mdb.models['Model-1'].optimizationTasks['topoopt2'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='STRAIN_ENERGY', name='se', operation=SUM, 
+    region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['topoopt2'].SingleTermDesignResponse(
+    drivingRegion=None, identifier='VOLUME', name='volume', operation=SUM, 
+    region=MODEL, stepOptions=())
+mdb.models['Model-1'].optimizationTasks['topoopt2'].ObjectiveFunction(name='se'
+    , objectives=((OFF, 'se', 1.0, 0.0, ''), ))
+mdb.models['Model-1'].optimizationTasks['topoopt2'].OptimizationConstraint(
+    designResponse='volume', name='vol', restrictionMethod=
+    RELATIVE_LESS_THAN_EQUAL, restrictionValue=0.1)
+mdb.OptimizationProcess(dataSaveFrequency=OPT_DATASAVE_SPECIFY_CYCLE, 
+    description='', maxDesignCycle=50, model='Model-1', name='topologycranio2', 
+    odbMergeFrequency=2, prototypeJob='topologycranio2-Job', task='topoopt2')
+mdb.optimizationProcesses['topologycranio2'].Job(atTime=None, 
+    getMemoryFromAnalysis=True, memory=90, memoryUnits=PERCENTAGE, model=
+    'Model-1', multiprocessingMode=DEFAULT, name='topologycranio2-Job', 
+    numCpus=1, numGPUs=0, queue=None, waitHours=0, waitMinutes=0)
+mdb.optimizationProcesses['topologycranio2'].submit()
+mdb.optimizationProcesses['topologycranio2']._Message(STARTED, {
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                ___ ___ __  __ _   _ _    ___   _                         |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |               / __|_ _|  \\/  | | | | |  |_ _| /_\\                        |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |               \\__ \\| || |\\/| | |_| | |__ | | / _ \\                       |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |               |___/___|_|  |_|\\___/|____|___/_/ \\_\\                      |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                     _______                                              |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                    |__   __|                                             |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                       | | ___  ___  ___ __ _                             |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                       | |/ _ \\/ __|/ __/ _` |                            |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                       | | (_) \\__ \\ (_| (_| |                            |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                       |_|\\___/|___/\\___\\__,_|                            |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |            _____ _                   _                                   |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |           / ____| |                 | |                                  |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |          | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ ___                  |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |           \\___ \\| __| "__| | | |/ __| __| | | | "__/ _ \\                 |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |           ____) | |_| |  | |_| | (__| |_| |_| | | |  __/                 |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |          |_____/ \\__|_|   \\__,_|\\___|\\__|\\__,_|_|  \\___|                 |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |                                                                          |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |    PERL execution control                                                |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |    Version 3DEXPERIENCE R2017x                                           |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' |    Copyright (c) 2016 Dassault Systemes Simulia Corp.                    |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Logfile: topologycranio2\\TOSCA.OUT', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' | Starting jobname: "topologycranio2"                                      |', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': '  -------------------------------------------------------------------------- ', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure pre-processor', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 0', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 14580, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:19:51 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 0', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 1', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 14980, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:20:48 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 1', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 2', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 7240, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:21:30 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 2', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 3', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15044, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:22:11 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 3', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 4', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 5156, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:22:52 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 4', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 5', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 9144, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:23:33 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 5', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 6', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15964, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:24:15 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 6', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 7', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 14204, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:24:56 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 7', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 8', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15764, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:25:37 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 8', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 9', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16000, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:26:17 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 9', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 10', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15940, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:26:56 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 10', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 11', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16268, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:27:34 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 11', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 12', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16196, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:28:12 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 12', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 13', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15544, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:28:48 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 13', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 14', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16344, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:29:24 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 14', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 15', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15668, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:29:59 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 15', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 16', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 11108, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:30:35 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 16', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 17', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15532, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:31:12 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 17', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 18', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 13468, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:31:47 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 18', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 19', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 5072, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:32:25 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 19', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 20', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 14776, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:33:03 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 20', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 21', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16832, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:33:44 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 21', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 22', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16424, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:34:22 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 22', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 23', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 17128, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:34:58 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 23', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 24', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 16028, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:35:33 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 24', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 25', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 15976, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:36:09 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 25', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 26', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 6840, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:36:46 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 26', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 27', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 17252, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:37:22 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 27', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 28', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 8408, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:37:57 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 28', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 29', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 8300, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:38:33 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 29', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 30', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 9556, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:39:08 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 30', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 31', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 17436, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:39:43 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 31', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting Abaqus analysis - design cycle 32', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 0, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '236 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE PARAMETER OP=NEW HAS BEEN MIXED WITH EITHER OP=ADD OR OP=REPLACE ON *OUTPUT REQUESTS.  OP=NEW IS ASSUMED FOR ALL *OUTPUT REQUESTS IN THIS STEP', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\topologycranio2\\topologycranio2-Job.odb', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'AN OUTPUT DATABASE REQUEST THAT REQUIRES THE CALCULATOR HAS BEEN FOUND.  IF VIEWING THE RESULTS BEFORE THE ANALYSIS IS COMPLETE, PLEASE RUN THE CALCULATOR MANUALLY USING THE CONVERT=ODB AND OLDJOB= OPTIONS.', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STARTED, {'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-DFG6L0C', 
+    'handle': 17956, 'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job', 'memory': 597.0})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 'physical_memory': 8074.0, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    MINIMUM_MEMORY, {'minimum_memory': 100.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    STATUS, {'totalTime': 1.0, 'attempts': 1, 'timeIncrement': 1.0, 
+    'increment': 1, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'topologycranio2-Job', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    COMPLETED, {'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2'].jobs['topologycranio2-Job']._Message(
+    JOB_COMPLETED, {'time': 'Wed May 30 20:40:19 2018', 
+    'jobName': 'topologycranio2-Job'})
+mdb.optimizationProcesses['topologycranio2']._archiveJob(jobName=
+    'topologycranio2-Job')
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure optimization module - design cycle 32', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Generating REPORT input file: topologycranio2\\topologycranio2_post.par', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' Starting SIMULIA Tosca Structure.report module', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(STATUS, {
+    'message': ' SIMULIA Tosca Structure ended successfully', 
+    'jobName': 'topologycranio2'})
+mdb.optimizationProcesses['topologycranio2']._Message(COMPLETED, {
+    'time': 'Wed May 30 20:40:36 2018', 'jobName': 'topologycranio2'})
+# Save by Muni Kumar lamborg on 2018_05_30-20.47.37; build 2017 2016_09_28-03.24.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.saveAs(pathName='G:/New folder/craniofacial 2.cae')
+# Save by Muni Kumar lamborg on 2018_05_30-20.47.45; build 2017 2016_09_28-03.24.59 126836

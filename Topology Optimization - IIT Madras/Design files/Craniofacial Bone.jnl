@@ -1,0 +1,347 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openParasolid(fileName='G:/New folder (3)/cRaNIoFacIaL RecOnsTRuCtiOn.x_t', 
+    topology=SOLID)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, dimensionality=
+    THREE_D, geometryFile=mdb.acis, name='cRaNIoFacIaL RecOnsTRuCtiOn-1', 
+    scale=1.0, type=DEFORMABLE_BODY)
+mdb.models['Model-1'].PartFromGeometryFile(bodyNum=2, combine=False, 
+    dimensionality=THREE_D, geometryFile=mdb.acis, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn-2', scale=1.0, type=DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='titanium')
+mdb.models['Model-1'].materials['titanium'].Elastic(table=((127500000000.0, 
+    0.31), ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='titanium', name=
+    'Design', thickness=None)
+mdb.models['Model-1'].HomogeneousSolidSection(material='titanium', name=
+    'Support', thickness=None)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].Set(cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Designset')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].SectionAssignment(
+    offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].sets['Designset']
+    , sectionName='Design', thicknessAssignment=FROM_SECTION)
+del mdb.models['Model-1'].sections['Support']
+mdb.models['Model-1'].HomogeneousSolidSection(material='titanium', name=
+    'Supportset', thickness=None)
+mdb.models['Model-1'].sections.changeKey(fromName='Supportset', toName=
+    'Support')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].Set(cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='supportset')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].SectionAssignment(
+    offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].sets['supportset']
+    , sectionName='Support', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn-1-1', part=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'])
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn-2-1', part=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'])
+mdb.models['Model-1'].StaticStep(name='Craniostep', previous='Initial')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn-1-1'].faces.getSequenceFromMask(
+    ('[#2 ]', ), ), name='fixedbcset')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName=
+    'Craniostep', distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=
+    None, name='fixedbc', region=
+    mdb.models['Model-1'].rootAssembly.sets['fixedbcset'], u1=0.0, u2=0.0, u3=
+    0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn-1-1'].faces.getSequenceFromMask(
+    ('[#4 ]', ), ), name='ficesbcotherset')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName=
+    'Craniostep', distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=
+    None, name='fixedbcother', region=
+    mdb.models['Model-1'].rootAssembly.sets['ficesbcotherset'], u1=0.0, u2=0.0, 
+    u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].boundaryConditions['fixedbcother'].setValues(u3=UNSET)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].seedPart(
+    deviationFactor=0.1, minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].seedPart(
+    deviationFactor=0.1, minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].setElementType(
+    elemTypes=(ElemType(elemCode=C3D8R, elemLibrary=STANDARD, 
+    secondOrderAccuracy=OFF, kinematicSplit=AVERAGE_STRAIN, 
+    hourglassControl=DEFAULT, distortionControl=DEFAULT), ElemType(
+    elemCode=C3D6, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D4, elemLibrary=STANDARD, 
+    secondOrderAccuracy=OFF, distortionControl=DEFAULT)), regions=(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].setMeshControls(
+    elemShape=TET, regions=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), technique=FREE)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].setElementType(
+    elemTypes=(ElemType(elemCode=C3D20R, elemLibrary=STANDARD), ElemType(
+    elemCode=C3D15, elemLibrary=STANDARD), ElemType(elemCode=C3D10, 
+    elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by Muni Kumar lamborg on 2018_05_28-14.58.30; build 2017 2016_09_28-03.24.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].setMeshControls(
+    elemShape=TET, regions=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), technique=FREE)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].setElementType(
+    elemTypes=(ElemType(elemCode=C3D20R, elemLibrary=STANDARD), ElemType(
+    elemCode=C3D15, elemLibrary=STANDARD), ElemType(elemCode=C3D10, 
+    elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].AttachmentPointsOffsetFromEdges(
+    edges=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges.getSequenceFromMask(
+    ('[#1000000 ]', ), ), name='Attachment Points-1', numberOfPoints=1, 
+    numberOfRows=1, pointCreationMethod=BY_NUMBER, setName=
+    'Attachment Points-1-Set-1', startPoint=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].vertices[11])
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by Muni Kumar lamborg on 2018_05_28-15.56.37; build 2017 2016_09_28-03.24.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].OffsetFaces(
+    distance=0.1, faceList=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].faces.getSequenceFromMask(
+    ('[#80 ]', ), ), trimToReferenceRep=False)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].ConvertToPrecise(
+    method=RECOMPUTE_GEOMETRY)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].checkGeometry()
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-50.0, 25.0), 
+    point2=(25.0, -25.0))
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -56.4303588867188, 4.0406494140625), value=2.7, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[0], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[1])
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -28.3578262329102, -13.8292675018311), value=3.6, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[3], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[0])
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[5], point1=(
+    -49.726806640625, -24.2190017700195))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[4], point1=(
+    -43.7903518676758, -24.4922847747803))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[3], point1=(
+    -47.5805473327637, -25.5398654937744))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[2], point1=(
+    -50.6401062011719, -23.5357971191406))
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-45.0, 30.0), 
+    point2=(40.0, -25.0))
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -53.0068778991699, 3.47154235839844), value=27.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[5])
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -13.9792098999023, 7.34146118164063), value=360.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[7], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4])
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    134.977157592773, 11.6405057907104), value=36.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[7], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4])
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[9], point1=(
+    63.4042053222656, -7.65355396270752))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7], point1=(
+    161.736434936523, -28.5554466247559))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[8], point1=(
+    324.226409912109, -12.155499458313))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[6], point1=(
+    -50.4032745361328, -7.33198261260986))
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(-50.0, 25.0), 
+    point2=(45.0, -23.75))
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -56.2021255493164, 2.67479705810547), value=27.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[8], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[9])
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -19.5708885192871, 9.27642440795898), value=36.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[11], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[8])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    -43.75, 3.25), point1=(-41.25, -2.5))
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[12], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[13])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    -21.25, 3.25), point1=(-18.75, -3.75))
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[14], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[13])
+mdb.models['Model-1'].sketches['__profile__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[14], radius=6.0, 
+    textPoint=(-47.1289520263672, -8.39749050140381))
+mdb.models['Model-1'].sketches['__profile__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[15], radius=6.0, 
+    textPoint=(-25.1222534179688, -7.68656444549561))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalDimension(textPoint=(
+    -19.0637283325195, -9.01954936981201), value=6.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[14], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[11])
+mdb.models['Model-1'].sketches['__profile__'].HorizontalDimension(textPoint=(
+    -46.5943756103516, 13.1968851089478), value=6.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[12], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[8])
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[14], point1=(
+    -40.4467544555664, 4.39917469024658))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[15], point1=(
+    -23.9640045166016, 3.59938335418701))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[13], point1=(
+    -22.5384712219238, -0.666171193122864))
+mdb.models['Model-1'].sketches['__profile__'].autoTrimCurve(curve1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[20], point1=(
+    -40.8031387329102, 0.311352640390396))
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    -32.5, -7.5), point1=(-30.0, -11.25))
+mdb.models['Model-1'].sketches['__profile__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[22], radius=4.5, 
+    textPoint=(-34.8337097167969, -17.0174674987793))
+mdb.models['Model-1'].sketches['__profile__'].DistanceDimension(entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[22], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[12], textPoint=(
+    -18.2618637084961, -14.8846883773804), value=18.0)
+mdb.models['Model-1'].sketches['__profile__'].DistanceDimension(entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[22], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[11], textPoint=(
+    -23.0730476379395, -22.4382762908936), value=17.5)
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Part-3', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Part-3'].BaseSolidExtrude(depth=21.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(-30.0, 0.0), point2=
+    (30.0, 0.0))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[2])
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Part-4', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Part-4'].BaseWire(sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+del mdb.models['Model-1'].parts['Part-3']
+del mdb.models['Model-1'].parts['Part-4']
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].WirePolyLine(
+    mergeType=IMPRINT, meshable=ON, points=((
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].InterestingPoint(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges[12], 
+    MIDDLE), 
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].InterestingPoint(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges[26], 
+    MIDDLE)), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].Set(name=
+    'Wire-1-Vertex-1', vertices=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].vertices.getSequenceFromMask(
+    ('[#2 ]', ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].Set(name=
+    'Wire-1-Vertex-2', vertices=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].vertices.getSequenceFromMask(
+    ('[#4 ]', ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].regenerate()
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].PartitionFaceByCurvedPathEdgePoints(
+    edge1=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges[6]
+    , edge2=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges[5], 
+    face=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].faces[9], 
+    point1=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].vertices[6], 
+    point2=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].vertices[5])
+#* Feature creation failed.
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].sets['Wire-1-Vertex-1']
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].sets['Wire-1-Vertex-2']
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].OffsetFaces(
+    distance=0.1, faceList=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].faces.getSequenceFromMask(
+    ('[#800 ]', ), ), trimToReferenceRep=False)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].regenerate()
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].regenerate()
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=2.57, name='__profile__', 
+    sheetSize=103.17, transform=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].faces[0], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].edges[1], 
+    sketchOrientation=BOTTOM, origin=(52.07, 68.58, 25.0)))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].projectReferencesOntoSketch(
+    filter=COPLANAR_EDGES, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(-12.85, -6.35), 
+    point2=(12.7223930358887, -6.35))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[11])
+mdb.models['Model-1'].sketches['__profile__'].ParallelConstraint(addUndoState=
+    False, entity1=mdb.models['Model-1'].sketches['__profile__'].geometry[2], 
+    entity2=mdb.models['Model-1'].sketches['__profile__'].geometry[11])
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[10], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[2])
+mdb.models['Model-1'].sketches['__profile__'].HorizontalDimension(textPoint=(
+    2.52841567993164, 1.99834411621094), value=25.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[10], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[11])
+del mdb.models['Model-1'].sketches['__profile__']
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].features['Wire-1']
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].features['Offset faces-2']
+del mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn-2'].features['Attachment Points-1']
+# Save by Muni Kumar lamborg on 2018_05_28-18.06.24; build 2017 2016_09_28-03.24.59 126836

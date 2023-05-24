@@ -1,0 +1,225 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openIges('G:/Bio Mechanics/cRaNIoFacIaL RecOnsTRuCtiOn 2.IGS', msbo=False, 
+    scaleFromFile=OFF, trimCurve=DEFAULT)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, convertToAnalytical=1
+    , dimensionality=THREE_D, geometryFile=mdb.acis, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn 2', stitchEdges=1, stitchTolerance=1.0, type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='steel')
+mdb.models['Model-1'].materials['steel'].Elastic(table=((29000000.0, 0.27), ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='steel', name='design', 
+    thickness=None)
+mdb.models['Model-1'].HomogeneousSolidSection(material='steel', name='support', 
+    thickness=None)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].Set(cells=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='designset')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].SectionAssignment(
+    offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].sets['designset']
+    , sectionName='design', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=0.02, name='__profile__', 
+    sheetSize=1.01, transform=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces[4], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13], 
+    sketchOrientation=RIGHT, origin=(3.58, 1.5, 1.05)))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].projectReferencesOntoSketch(
+    filter=COPLANAR_EDGES, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, 0.25), point2=(
+    0.0, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[5], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[5])
+mdb.models['Model-1'].sketches['__profile__'].EqualDistanceConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[3], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[0], midpoint=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4])
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[5], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[3])
+mdb.models['Model-1'].sketches['__profile__'].EqualDistanceConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[1], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[2], midpoint=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[5])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, -0.25), point2=
+    (0.0, 0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].sketches['__profile__'].ParallelConstraint(addUndoState=
+    False, entity1=mdb.models['Model-1'].sketches['__profile__'].geometry[6], 
+    entity2=mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, 0.25), point2=(
+    0.0, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[8])
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionFaceBySketch(
+    faces=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces.getSequenceFromMask(
+    ('[#10 ]', ), ), sketch=mdb.models['Model-1'].sketches['__profile__'], 
+    sketchUpEdge=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[13])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=0.17, name='__profile__', 
+    sheetSize=7.19, transform=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces[1], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[11], 
+    sketchOrientation=RIGHT, origin=(0.02, 1.5, 1.05)))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].projectReferencesOntoSketch(
+    filter=COPLANAR_EDGES, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, 0.25), point2=(
+    0.0, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].VerticalConstraint(addUndoState=
+    False, entity=mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[5], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[6])
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[5])
+mdb.models['Model-1'].sketches['__profile__'].EqualDistanceConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[3], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[0], midpoint=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[4])
+mdb.models['Model-1'].sketches['__profile__'].CoincidentConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[5], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[3])
+mdb.models['Model-1'].sketches['__profile__'].EqualDistanceConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[1], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[2], midpoint=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[5])
+mdb.models['Model-1'].sketches['__profile__'].Line(point1=(0.0, -0.25), point2=
+    (-0.05, -0.25))
+mdb.models['Model-1'].sketches['__profile__'].HorizontalConstraint(
+    addUndoState=False, entity=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].sketches['__profile__'].PerpendicularConstraint(
+    addUndoState=False, entity1=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[6], entity2=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[7])
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].PartitionFaceBySketch(
+    faces=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].faces.getSequenceFromMask(
+    ('[#2 ]', ), ), sketch=mdb.models['Model-1'].sketches['__profile__'], 
+    sketchUpEdge=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].edges[11])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name=
+    'cRaNIoFacIaL RecOnsTRuCtiOn 2-1', part=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'])
+mdb.models['Model-1'].StaticStep(name='designstep', previous='Initial')
+mdb.models['Model-1'].StaticStep(name='supportstep', previous='designstep')
+del mdb.models['Model-1'].steps['supportstep']
+mdb.models['Model-1'].rootAssembly.Set(edges=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].edges.getSequenceFromMask(
+    ('[#10 ]', ), ), name='fixedbcs')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='fixedbc1', 
+    region=mdb.models['Model-1'].rootAssembly.sets['fixedbcs'], u1=SET, u2=SET, 
+    u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].rootAssembly.Set(edges=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].edges.getSequenceFromMask(
+    ('[#1 ]', ), ), name='fixedbc2set')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='fixedbctwo', 
+    region=mdb.models['Model-1'].rootAssembly.sets['fixedbc2set'], u1=SET, u2=
+    SET, u3=SET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].TabularAmplitude(data=((0.0, 0.0), (1.0, 1.0)), name=
+    'Amp-1', smooth=SOLVER_DEFAULT, timeSpan=STEP)
+mdb.models['Model-1'].rootAssembly.Surface(name='load1surf', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].faces.getSequenceFromMask(
+    ('[#40000 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude='Amp-1', createStepName='designstep', 
+    distributionType=UNIFORM, field='', magnitude=1000.0, name='load1', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['load1surf'])
+mdb.models['Model-1'].rootAssembly.Surface(name='load2step', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['cRaNIoFacIaL RecOnsTRuCtiOn 2-1'].faces.getSequenceFromMask(
+    ('[#80000 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude='Amp-1', createStepName='designstep', 
+    distributionType=UNIFORM, field='', magnitude=200.0, name='load2', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['load2step'])
+mdb.models['Model-1'].loads['load1'].setValues(distributionType=TOTAL_FORCE)
+mdb.models['Model-1'].loads['load2'].setValues(distributionType=TOTAL_FORCE)
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-1', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, queue=None, resultsFormat=ODB, scratch='', type=
+    ANALYSIS, userSubroutine='', waitHours=0, waitMinutes=0)
+mdb.jobs.changeKey(fromName='Job-1', toName='job1cranio2')
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].seedPart(
+    deviationFactor=0.1, minSizeFactor=0.1, size=0.1)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].setMeshControls(
+    elemShape=TET, regions=
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), technique=FREE)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].setElementType(
+    elemTypes=(ElemType(elemCode=C3D20R, elemLibrary=STANDARD), ElemType(
+    elemCode=C3D15, elemLibrary=STANDARD), ElemType(elemCode=C3D10, 
+    elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].generateMesh()
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].deleteMesh()
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].seedPart(
+    deviationFactor=0.1, minSizeFactor=0.1, size=0.05)
+mdb.models['Model-1'].parts['cRaNIoFacIaL RecOnsTRuCtiOn 2'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.jobs['job1cranio2'].submit(consistencyChecking=OFF)
+mdb.jobs['job1cranio2']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 0, 'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '1 elements are distorted. Either the isoparametric angles are out of the suggested limits or the triangular or tetrahedral quality measure is bad. The elements have been identified in element set WarnElemDistorted.', 
+    'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\job1cranio2.odb', 'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-DFG6L0C', 'handle': 11500, 
+    'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 0, 'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job1cranio2', 'memory': 7267.0})
+mdb.jobs['job1cranio2']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 8074.0, 'jobName': 'job1cranio2'})
+mdb.jobs['job1cranio2']._Message(MINIMUM_MEMORY, {'minimum_memory': 2506.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job1cranio2'})
+# Save by Muni Kumar lamborg on 2018_05_31-13.22.10; build 2017 2016_09_28-03.24.59 126836
